@@ -10,7 +10,7 @@ import java.util.List;
  * Created by oldman on 11.01.17.
  */
 
-public class WeatherResponse {
+public class WeatherData {
     @Expose
     private City city;
     @SerializedName("cod")
