@@ -21,74 +21,56 @@ import butterknife.ButterKnife;
 
 public class WeatherInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int VIEWTYPE_TEXT = 0;
-    private final int VIEWTYPE_IMAGE = 1;
+    private final String LOG_TAG = WeatherInfoAdapter.class.getSimpleName();
+
+    private List<Stream> items = null;
     private LayoutInflater inflater;
+    private View.OnClickListener onItemClickListener;
 
-    List<WeatherInfo> items = null;
-
-    public WeatherInfoAdapter(LayoutInflater inflater) {
+    public WeatherInfoAdapter(LayoutInflater inflater, View.OnClickListener onItemClickListener) {
         this.inflater = inflater;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public List<Stream> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Stream> items) {
+//        this.items.clear();
+//        this.items.addAll(items);
+        this.items = items;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder = null;
-        switch(viewType) {
-            case VIEWTYPE_IMAGE:
-                break;
-            case VIEWTYPE_TEXT:
-                break;
-            default:
-//                throw new Exception("unkonown viewholder");
-                break;
-        }
-        return viewHolder;
+    public StreamViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = inflater.inflate(R.layout.item_stream, parent, false);
+        return new StreamViewHolder(v, onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(StreamViewHolder holder, int position) {
+        Stream stream = items.get(position);
+        holder.stream = stream;
+        holder.name.setText(stream.getHeader());
     }
 
     @Override
     public int getItemCount() {
-        if (items == null) {
-            return 0;
-        } else {
-            return items.size();
-        }
+        if (items == null) return 0;
+        else return items.size();
     }
 
-    public static class InfoViewHolder extends RecyclerView.ViewHolder {
+    public static class StreamViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.title) TextView title;
-        @BindView(R.id.text) TextView text;
+        @BindView(R.id.flag) ImageView flag;
+        @BindView(R.id.name) TextView name;
+        Stream stream;
 
-        public InfoViewHolder(View itemView) {
+        public StreamViewHolder(View itemView, View.OnClickListener clickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-        }
-
-        @Override
-        public String toString() {
-            return "InfoViewHolder " + super.toString();
-        }
-    }
-
-    public static class InfoPictureViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.image)
-        ImageView image;
-
-        public InfoPictureViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @Override
-        public String toString() {
-            return "InfoPictureViewHolder " + super.toString();
+            itemView.setOnClickListener(clickListener);
         }
     }
 }

@@ -5,4 +5,11 @@ package com.shadiz.android.weatherwatcher.model;
  */
 
 public class WeatherInfo {
+
+    public WeatherInfo() {
+    }
+
+    public String getTitle() {
+        return "SBP";
+    }
 }

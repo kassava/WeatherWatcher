@@ -21,9 +21,18 @@ public class WeatherPresenter extends MvpBasePresenter<WeatherView> {
         this.weatherApi = weatherApi;
     }
 
-    public void loadWeather() {
+    public void loadWeather(final boolean pullToRefresh) {
         if (isViewAttached()) {
-            getView().showLoading(false);
+            getView().showLoading(pullToRefresh);
+        }
+
+        try {
+            Thread.sleep(2000);
+            if (isViewAttached()) {
+                getView().showContent();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
