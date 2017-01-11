@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -18,7 +19,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
 import com.shadiz.android.weatherwatcher.R;
 import com.shadiz.android.weatherwatcher.WeatherWatcherApp;
 import com.shadiz.android.weatherwatcher.base.CustomViewState;
-import com.shadiz.android.weatherwatcher.model.WeatherInfo;
+import com.shadiz.android.weatherwatcher.model.WeatherData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,14 +32,16 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
         implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
     private Context context;
-    private WeatherInfoAdapter adapter;
-    private WeatherInfo weatherInfo = null;
+    private DayWeatherAdapter adapter;
+    private WeatherData weatherData = null;
 
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.errorView) View errorView;
     @BindView(R.id.loadingView) View loadingView;
     @BindView(R.id.showfab) FloatingActionButton showFab;
+    @BindView(R.id.city) TextView countryTextView;
+    @BindView(R.id.coordinates) TextView coordinatesTextView;
 
     public WeatherLayout(Context ctx, AttributeSet attributeSet) {
         super(ctx, attributeSet);
@@ -50,14 +53,7 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
         super.onFinishInflate();
         ButterKnife.bind(this);
 
-        adapter = new WeatherInfoAdapter(LayoutInflater.from(context),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }
-        );
+        adapter = new DayWeatherAdapter(LayoutInflater.from(context));
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -79,15 +75,10 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
         });
     }
 
-    @Override
-    public void onRefresh() {
-        loadData(true);
-    }
-
     @NonNull
     @Override
     public ViewState<WeatherView> createViewState() {
-        return new CustomViewState<WeatherInfo, WeatherView>();
+        return new CustomViewState<WeatherData, WeatherView>();
     }
 
     @Override
@@ -125,8 +116,7 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showContent() {
-//        castedViewState().setStateShowContent(adapter.getItems());
-
+        castedViewState().setStateShowContent(weatherData);
 
         if (isRestoringViewState()) {
             swipeRefreshLayout.setVisibility(VISIBLE);
@@ -170,8 +160,13 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
     }
 
     @Override
-    public void setData(WeatherInfo data) {
-//        adapter.setItems(data);
+    public void setData(WeatherData data) {
+        this.weatherData = data;
+        countryTextView.setText(weatherData.getCity().getName() + ", "
+                + weatherData.getCity().getCountry());
+        coordinatesTextView.setText(weatherData.getCity().getCoordinates().getLat() + " - "
+                + weatherData.getCity().getCoordinates().getLon());
+        adapter.setItems(weatherData.getList());
         adapter.notifyDataSetChanged();
     }
 
@@ -180,7 +175,12 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
         presenter.loadWeather(pullToRefresh);
     }
 
-    private CustomViewState<WeatherInfo, WeatherView> castedViewState() {
-        return (CustomViewState<WeatherInfo, WeatherView>)viewState;
+    @Override
+    public void onRefresh() {
+        loadData(true);
+    }
+
+    private CustomViewState<WeatherData, WeatherView> castedViewState() {
+        return (CustomViewState<WeatherData, WeatherView>)viewState;
     }
 }

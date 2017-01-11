@@ -62,7 +62,7 @@ public class CustomViewState<D, V extends MvpLceView<D>>
         // PullToRefresh
         writeBoolean(dest, pullToRefresh);
 
-        // write exception
+        // Write exception
         dest.writeSerializable(exception);
     }
 
