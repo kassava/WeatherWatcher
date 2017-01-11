@@ -14,7 +14,8 @@ public class WeatherWatcherApp extends Application {
 
     @Override
     public void onCreate() {
-
+        super.onCreate();
+        component = com.shadiz.android.weatherwatcher.dagger.DaggerApplicationComponent.create();
     }
 
     public static ApplicationComponent getComponent() {

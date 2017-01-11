@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weather Watcher</string>
+    <string name="loading_error">An error has occurred. Click here to retry</string>
 </resources>

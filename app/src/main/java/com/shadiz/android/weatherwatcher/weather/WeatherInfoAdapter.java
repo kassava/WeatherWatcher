@@ -36,10 +36,8 @@ public class WeatherInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         RecyclerView.ViewHolder viewHolder = null;
         switch(viewType) {
             case VIEWTYPE_IMAGE:
-                viewHolder = new InfoPictureViewHolder(inflater.inflate(R.layout.item_picture, parent, false));
                 break;
             case VIEWTYPE_TEXT:
-                viewHolder = new InfoViewHolder(inflater.inflate(R.layout.item_info, parent, false));
                 break;
             default:
 //                throw new Exception("unkonown viewholder");
@@ -50,18 +48,7 @@ public class WeatherInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof InfoViewHolder) {
-            InfoText info = (InfoText) items.get(position);
-            ((InfoViewHolder) holder).title.setText(info.getTitleRes());
-            ((InfoViewHolder) holder).text.setText(info.getText());
-        } else {
-            if (holder instanceof InfoPictureViewHolder) {
-                InfoPicture info = (InfoPicture) items.get(position);
-                // download image and set it to holder ...
-            } else {
-                // throw new Exception("unkonown viewholder");
-            }
-        }
+
     }
 
     @Override
