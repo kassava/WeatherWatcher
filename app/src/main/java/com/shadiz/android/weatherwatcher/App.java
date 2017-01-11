@@ -15,6 +15,4 @@ public class App extends Application {
 //        void inject(HomeActivity homeActivity);
 //        void inject(DemoActivity demoActivity);
 //    }
-
-
 }
