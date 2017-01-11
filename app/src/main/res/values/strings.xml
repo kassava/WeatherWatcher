@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Weather Watcher</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="api_key">f76580b593e74c3dbcc24d1941eaa004</string>
+    <string name="web_service_url"> http://api.openweathermap.org/data/2.5/forecast/daily?q=</string>
+    <string name="invalid_url"> Invalid URL</string>
+    <string name="high_temp">High: %s</string>
+    <string name="low_temp">Low: %s</string>
+    <string name="day_description">%1$s: %2$s</string>
+    <string name="humidity"> Humidity:"> %s</string>
+    <string name="hint_text"> Enter city (e.g, Boston, MA, US)</string>
+    <string name="read_error"> Unable to read weather data</string>
+    <string name="connect_error"> Unable to connect to OpenWeatherMap.org</string>
 </resources>
