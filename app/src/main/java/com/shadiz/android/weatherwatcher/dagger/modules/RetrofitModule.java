@@ -9,9 +9,13 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Field;
 
 /**
  * Created by oldman on 11.01.17.
@@ -22,14 +26,19 @@ public class RetrofitModule {
     @Provides
     @Singleton
     public Retrofit provideRetrofit(Retrofit.Builder builder) {
-        return builder.baseUrl("https://api.openweathermap.org/data/2.5").build();
+        return builder.baseUrl("http://api.openweathermap.org/data/2.5/").build();
     }
 
     @Provides
     @Singleton
     public Retrofit.Builder provideRetrofitBuilder(Converter.Factory converterFactory) {
-        return new Retrofit.Builder()
-                .addConverterFactory(converterFactory);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        return new Retrofit.Builder().addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(converterFactory).client(httpClient.build());
     }
 
     @Provides
@@ -47,5 +56,14 @@ public class RetrofitModule {
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .serializeNulls()
                 .create();
+    }
+
+    private static class CustomFieldNamingPolicy implements FieldNamingStrategy {
+        @Override
+        public String translateName(java.lang.reflect.Field f) {
+            String name = FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES.translateName(f);
+            name = name.substring(2, name.length()).toLowerCase();
+            return name;
+        }
     }
 }

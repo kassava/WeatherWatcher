@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
  * Created by oldman on 11.01.17.
  */
 
-class Coordinates {
+public class Coord {
     @Expose
     private Double lon;
     @Expose private Double lat;

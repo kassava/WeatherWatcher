@@ -7,27 +7,40 @@ import com.google.gson.annotations.SerializedName;
  * Created by oldman on 11.01.17.
  */
 
-class Temperature {
+public class Temp {
     @SerializedName("day")
     @Expose
-    private Double average;
+    private Double day;
+    @SerializedName("min")
+    @Expose
+    private Integer min;
+    @SerializedName("max")
     @Expose
     private Double max;
+    @SerializedName("night")
     @Expose
-    private Double min;
-    @Expose
-    private Double night;
+    private Integer night;
+    @SerializedName("eve")
     @Expose
     private Double eve;
+    @SerializedName("morn")
     @Expose
     private Double morn;
 
     public Double getDay() {
-        return average;
+        return day;
     }
 
-    public void setDay(Double average) {
-        this.average = average;
+    public void setDay(Double day) {
+        this.day = day;
+    }
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
     }
 
     public Double getMax() {
@@ -38,19 +51,11 @@ class Temperature {
         this.max = max;
     }
 
-    public Double getMin() {
-        return min;
-    }
-
-    public void setMin(Double min) {
-        this.min = min;
-    }
-
-    public Double getNight() {
+    public Integer getNight() {
         return night;
     }
 
-    public void setNight(Double night) {
+    public void setNight(Integer night) {
         this.night = night;
     }
 
@@ -69,6 +74,5 @@ class Temperature {
     public void setMorn(Double morn) {
         this.morn = morn;
     }
-
 
 }

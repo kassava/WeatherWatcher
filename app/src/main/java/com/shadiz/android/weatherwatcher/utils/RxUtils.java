@@ -1,15 +1,18 @@
 package com.shadiz.android.weatherwatcher.utils;
 
+import android.util.Log;
+
+import com.shadiz.android.weatherwatcher.model.WeatherData;
 import com.shadiz.android.weatherwatcher.network.WeatherError;
 
 import java.io.IOException;
 
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by oldman on 11.01.17.
@@ -26,8 +29,7 @@ public class RxUtils {
                 subscriber.onError(e);
                 return;
             }
-
-            if (execute.isSuccess()) {
+            if (execute.isSuccessful()) {
                 subscriber.onNext(execute.body());
             } else {
                 subscriber.onError(new WeatherError(execute.errorBody()));

@@ -22,7 +22,6 @@ public class WeatherError extends Throwable {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-
         return "Unknown exception";
     }
 }

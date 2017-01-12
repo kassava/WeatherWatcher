@@ -2,6 +2,7 @@ package com.shadiz.android.weatherwatcher.network;
 
 import android.content.Context;
 
+import com.shadiz.android.weatherwatcher.App;
 import com.shadiz.android.weatherwatcher.R;
 import com.shadiz.android.weatherwatcher.model.WeatherData;
 
@@ -24,10 +25,10 @@ public class WeatherService {
     }
 
     public Call<WeatherData> getWeather(String city) {
-        return weatherApi.getWeatherCity(city, context.getResources().getString(R.string.api_key));
+        return weatherApi.getWeatherCity(city, App.getComponent().getContext().getResources().getString(R.string.api_key));
     }
 
-//    public Call<WeatherData> getWeather(String city, String country) {
-//        return weatherApi.getWeatherCity(city + "," + country);
-//    }
+    public Call<WeatherData> getWeather(String city, String country) {
+        return weatherApi.getWeatherCity(city + "," + country, App.getComponent().getContext().getResources().getString(R.string.api_key));
+    }
 }

@@ -2,6 +2,7 @@ package com.shadiz.android.weatherwatcher.dagger;
 
 import android.content.Context;
 
+import com.shadiz.android.weatherwatcher.MainActivity;
 import com.shadiz.android.weatherwatcher.dagger.modules.ContextModule;
 import com.shadiz.android.weatherwatcher.dagger.modules.WeatherModule;
 import com.shadiz.android.weatherwatcher.network.WeatherService;
@@ -19,5 +20,6 @@ public interface ApplicationComponent {
     Context getContext();
     WeatherService getWeatherService();
 
-//    void inject( presenter);
+    void inject(MainActivity mainActivity);
+    void inject(WeatherService weatherService);
 }

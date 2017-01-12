@@ -7,42 +7,29 @@ import com.google.gson.annotations.SerializedName;
  * Created by oldman on 11.01.17.
  */
 
-class City {
+public class City {
+    @SerializedName("id")
     @Expose
-    private long id;
+    private Integer id;
+    @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("coord")
     @Expose
-    private Coordinates coordinates;
+    private Coord coord;
+    @SerializedName("country")
     @Expose
     private String country;
+    @SerializedName("population")
     @Expose
     private Integer population;
 
-
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public Integer getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Integer population) {
-        this.population = population;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -53,11 +40,27 @@ class City {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public Coord getCoord() {
+        return coord;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setCoord(Coord coord) {
+        this.coord = coord;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Integer getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Integer population) {
+        this.population = population;
     }
 }

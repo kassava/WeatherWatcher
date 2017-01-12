@@ -1,12 +1,10 @@
 package com.shadiz.android.weatherwatcher.network;
 
-import android.database.Observable;
-
 import com.shadiz.android.weatherwatcher.model.WeatherData;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -14,12 +12,7 @@ import retrofit2.http.Query;
  */
 
 public interface WeatherApi {
-    Integer PAGE_SIZE = 50;
-
-    @GET("/weather")
-    Call<WeatherData> getWeatherCity(@Query("q") String city,  @Query("appid") String apiKey);
-
-//    @GET("/weather")
-//    Call<WeatherData> getWeatherCity(@Query("q") String city, Callback<WeatherData> response);
+    @GET("forecast/daily?mode=json&units=metric&cnt=7")
+    Call<WeatherData> getWeatherCity(@Query("q") String city, @Query("appid") String appid);
 
 }
