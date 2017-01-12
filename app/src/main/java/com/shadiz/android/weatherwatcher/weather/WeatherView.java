@@ -4,7 +4,7 @@ import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import com.shadiz.android.weatherwatcher.model.WeatherData;
 
 /**
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
 public interface WeatherView extends MvpLceView<WeatherData> {

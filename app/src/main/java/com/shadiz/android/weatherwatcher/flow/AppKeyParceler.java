@@ -8,7 +8,7 @@ import flow.KeyParceler;
 /**
  * Class is responsible to write and read a “key” as parcelable
  *
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
 public final class AppKeyParceler implements KeyParceler {

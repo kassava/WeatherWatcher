@@ -28,14 +28,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
 public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherPresenter>
         implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
     private Context context;
-    private DayWeatherAdapter adapter;
+    private ListAdapter adapter;
     private WeatherData weatherData = null;
     private String cityName;
 
@@ -59,7 +59,7 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
 
         cityName = getSharedPreferences().getString("CITYNAME", "Riga");
 
-        adapter = new DayWeatherAdapter(LayoutInflater.from(context));
+        adapter = new ListAdapter(LayoutInflater.from(context));
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -191,8 +191,8 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
 
         countryTextView.setText(weatherData.getCity().getName() + ", "
                 + weatherData.getCity().getCountry());
-        coordinatesTextView.setText(weatherData.getCity().getCoordinates().getLat() + " - "
-                + weatherData.getCity().getCoordinates().getLon());
+        coordinatesTextView.setText(weatherData.getCity().getCoord().getLat() + " - "
+                + weatherData.getCity().getCoord().getLon());
 
         adapter.setItems(weatherData.getList());
         adapter.notifyDataSetChanged();

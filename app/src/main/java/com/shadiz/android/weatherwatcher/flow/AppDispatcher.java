@@ -16,7 +16,7 @@ import flow.Traversal;
 import flow.TraversalCallback;
 
 /**
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
 final public class AppDispatcher implements Dispatcher {

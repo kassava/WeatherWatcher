@@ -1,36 +1,33 @@
 package com.shadiz.android.weatherwatcher.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
-class Weather {
+public class Weather {
 
+    @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("main")
     @Expose
     private String main;
+    @SerializedName("description")
     @Expose
-    private Double description;
+    private String description;
+    @SerializedName("icon")
     @Expose
     private String icon;
 
-    public String getIcon() {
-        return icon;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Double getDescription() {
-        return description;
-    }
-
-    public void setDescription(Double description) {
-        this.description = description;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getMain() {
@@ -41,11 +38,19 @@ class Weather {
         this.main = main;
     }
 
-    public int getId() {
-        return id;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

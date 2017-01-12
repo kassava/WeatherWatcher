@@ -12,7 +12,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 /**
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
 public class CustomViewState<D, V extends MvpLceView<D>>

@@ -3,14 +3,9 @@ package com.shadiz.android.weatherwatcher.weather;
 import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
-import com.shadiz.android.weatherwatcher.model.City;
-import com.shadiz.android.weatherwatcher.model.DayWeather;
-import com.shadiz.android.weatherwatcher.model.Temperature;
-import com.shadiz.android.weatherwatcher.model.WeatherApi;
+import com.shadiz.android.weatherwatcher.model.WeatherProvider;
 import com.shadiz.android.weatherwatcher.model.WeatherData;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.shadiz.android.weatherwatcher.utils.RxUtils;
 
 import javax.inject.Inject;
 
@@ -20,17 +15,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by kassava on 11.01.17.
+ * Created by johny homicide on 11.01.17.
  */
 
 public class WeatherPresenter extends MvpBasePresenter<WeatherView> {
 
-    private WeatherApi weatherApi;
+    private WeatherProvider weatherProvider;
     private Subscription subscription = null;
 
     @Inject
-    public WeatherPresenter(WeatherApi weatherApi) {
-        this.weatherApi = weatherApi;
+    public WeatherPresenter(WeatherProvider weatherApi) {
+        this.weatherProvider = weatherApi;
     }
 
     public void loadWeather(final boolean pullToRefresh, String city) {
@@ -38,30 +33,30 @@ public class WeatherPresenter extends MvpBasePresenter<WeatherView> {
             getView().showLoading(pullToRefresh);
         }
 
-        subscription = weatherApi.getWeatherData(city)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WeatherData>() {
-                    @Override
-                    public void onCompleted() {
-                        if (isViewAttached()) {
-                            getView().showContent();
-                        }
+        RxUtils.wrapAsync(weatherProvider.getWeatherData(city))
+                .subscribe(weatherData -> {
+                    if (isViewAttached()) {
+                        getView().setData(weatherData);
+                        getView().showContent();
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (isViewAttached()) {
-                            getView().showError(e, pullToRefresh);
-                        }
-                    }
-
-                    @Override
-                    public void onNext(WeatherData weatherData) {
-                        if (isViewAttached()) {
-                            getView().setData(weatherData);
-                        }
+                }, exception -> {
+                    Log.d("MainActivity", exception.getMessage());
+                    if (isViewAttached()) {
+                        getView().showError(exception, pullToRefresh);
                     }
                 });
+    }
+
+    @Override
+    public void attachView(WeatherView view) {
+        super.attachView(view);
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        if (!retainInstance && subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 }
