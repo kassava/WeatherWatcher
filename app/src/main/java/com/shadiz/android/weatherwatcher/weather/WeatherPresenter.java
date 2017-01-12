@@ -33,12 +33,12 @@ public class WeatherPresenter extends MvpBasePresenter<WeatherView> {
         this.weatherApi = weatherApi;
     }
 
-    public void loadWeather(final boolean pullToRefresh) {
+    public void loadWeather(final boolean pullToRefresh, String city) {
         if (isViewAttached()) {
             getView().showLoading(pullToRefresh);
         }
 
-        subscription = weatherApi.getWeatherData()
+        subscription = weatherApi.getWeatherData(city)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherData>() {

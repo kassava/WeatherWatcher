@@ -1,6 +1,9 @@
 package com.shadiz.android.weatherwatcher.weather;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -11,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +22,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.layout.MvpViewStateFrameLayout;
 import com.shadiz.android.weatherwatcher.R;
 import com.shadiz.android.weatherwatcher.WeatherWatcherApp;
-import com.shadiz.android.weatherwatcher.base.CustomViewState;
 import com.shadiz.android.weatherwatcher.model.WeatherData;
 
 import butterknife.BindView;
@@ -34,12 +37,13 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
     private Context context;
     private DayWeatherAdapter adapter;
     private WeatherData weatherData = null;
+    private String cityName;
 
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.errorView) View errorView;
     @BindView(R.id.loadingView) View loadingView;
-    @BindView(R.id.showfab) FloatingActionButton showFab;
+    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.city) TextView countryTextView;
     @BindView(R.id.coordinates) TextView coordinatesTextView;
 
@@ -52,6 +56,8 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
+
+        cityName = getSharedPreferences().getString("CITYNAME", "Riga");
 
         adapter = new DayWeatherAdapter(LayoutInflater.from(context));
 
@@ -67,12 +73,32 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        showFab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add city choice.
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                final EditText editText = new EditText(context);
+
+                builder.setTitle("Enter the name of the city.")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                cityName = editText.getText().toString();
+                                presenter.loadWeather(false, cityName);
+
+                                getSharedPreferences().edit().putString("CITYNAME", cityName).apply();
+                            }
+                        })
+                        .setView(editText);
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return context
+                .getSharedPreferences("com.android.shadiz.weatherwatcher",
+                        Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -162,17 +188,19 @@ public class WeatherLayout extends MvpViewStateFrameLayout<WeatherView, WeatherP
     @Override
     public void setData(WeatherData data) {
         this.weatherData = data;
+
         countryTextView.setText(weatherData.getCity().getName() + ", "
                 + weatherData.getCity().getCountry());
         coordinatesTextView.setText(weatherData.getCity().getCoordinates().getLat() + " - "
                 + weatherData.getCity().getCoordinates().getLon());
+
         adapter.setItems(weatherData.getList());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        presenter.loadWeather(pullToRefresh);
+        presenter.loadWeather(pullToRefresh, cityName);
     }
 
     @Override

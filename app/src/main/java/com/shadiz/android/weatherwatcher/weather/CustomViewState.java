@@ -1,4 +1,4 @@
-package com.shadiz.android.weatherwatcher.base;
+package com.shadiz.android.weatherwatcher.weather;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -21,7 +21,7 @@ public class CustomViewState<D, V extends MvpLceView<D>>
     private final String LOG_TAG = CustomViewState.class.getSimpleName();
 
     public static final String KEY_BUNDLE_VIEW_STATE =
-            "com.shadiz.android.weatherwatcher.base.CustomViewState.bundlekey";
+            "com.shadiz.android.weatherwatcher.weather.CustomViewState.bundlekey";
 
     protected int currentViewState;
     protected boolean pullToRefresh;

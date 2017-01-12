@@ -14,11 +14,11 @@ import rx.Observable;
 
 public class WeatherApi {
 
-    public Observable<WeatherData> getWeatherData() {
+    public Observable<WeatherData> getWeatherData(String cityName) {
         WeatherData weatherData = new WeatherData();
         City city = new City();
         city.setCountry("RF");
-        city.setName("SPB");
+        city.setName(cityName);
         city.setPopulation(123);
         city.setId(7);
         Coordinates coordinates = new Coordinates();
